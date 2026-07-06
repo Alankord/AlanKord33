@@ -2,54 +2,297 @@
 <html lang="ku">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>IQ Puzzle - 999 ئاست</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ئاماژە بە دەنگ - کوردی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', 'Noto Sans Arabic', sans-serif;
+            background: linear-gradient(135deg, #0b3d0b, #1a6e1a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 0 #00000055;
+        }
+        .sub {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        video {
+            width: 100%;
+            border-radius: 20px;
+            border: 3px solid #ffd700;
+            background: #000;
+            transform: scaleX(-1);
+            min-height: 200px;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+        button {
+            background: #ffd700;
+            color: #1a3d1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 #b38f00;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #b38f00;
+        }
+        button:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #b38f00;
+        }
+        .sign-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .sign-btn {
+            background: #2a5e2a;
+            color: #fff;
+            border: 2px solid #ffd700;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .sign-btn:hover {
+            background: #ffd700;
+            color: #0b2b0b;
+            transform: scale(1.05);
+        }
+        #status {
+            background: #00000066;
+            padding: 12px;
+            border-radius: 40px;
+            margin-top: 15px;
+            font-size: 1.2rem;
+            border: 1px solid #ffd70088;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        .voice-picker {
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        select {
+            background: #1a3d1a;
+            color: #fff;
+            border: 1px solid #ffd700;
+            border-radius: 10px;
+            padding: 6px 10px;
+        }
+        .add-form {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        .add-form input {
+            padding: 10px;
+            border-radius: 20px;
+            border: none;
+            font-size: 1rem;
+            min-width: 160px;
+        }
+    </style>
 </head>
 <body>
-    <canvas id="netCanvas"></canvas>
-    <div id="app">
-        <!-- سەرپەڕە -->
-        <div id="homeScreen">
-            <div class="logo">🧠</div>
-            <h1>IQ PUZZLE</h1>
-            <p>٩٩٩ ئاست بۆ تاقیکردنەوەی بیرەوەری!</p>
-            <button onclick="startGame()">🔓 دەستپێبکە</button>
-            <div class="stats">
-                <span>🏆 ئاست: <b id="levelDisplay">١</b></span>
-                <span>⭐ خاڵ: <b id="scoreDisplay">٠</b></span>
-            </div>
-        </div>
 
-        <!-- دەرگای یاری -->
-        <div id="gameScreen" style="display:none">
-            <div class="header">
-                <span>🏆 ئاست <b id="gameLevel">١</b>/٩٩٩</span>
-                <span>⭐ <b id="gameScore">٠</b></span>
-                <button onclick="goHome()" class="homeBtn">🏠</button>
-            </div>
-            <div class="puzzle-box">
-                <div id="puzzleImage">🖼️</div>
-                <h3 id="puzzleQuestion">پرسیار لێرە دەردەکەوێت</h3>
-                <div id="puzzleContent"></div>
-            </div>
-            <div class="options" id="optionsContainer"></div>
-            <div class="controls">
-                <button onclick="hint()" class="hintBtn">💡 ئاماژە (<span id="hintCount">٣</span>)</button>
-                <button onclick="checkAnswer()" class="submitBtn">✅ وەڵام بدە</button>
-            </div>
-            <div id="feedback"></div>
-        </div>
+<div class="container">
+    <h1>🧏 ئاماژە → دەنگی کوردی</h1>
+    <p class="sub">کامێرا بکەرەوە، دواتر ئاماژەیەک هەڵبژێرە یان وشەیەکی نوێ زیاد بکە</p>
 
-        <!-- دەرگای کۆتایی -->
-        <div id="endScreen" style="display:none">
-            <div class="trophy">🏆</div>
-            <h1>پیرۆز بێت! 🎉</h1>
-            <p>تۆ هەموو ٩٩٩ ئاستت تەواو کرد!</p>
-            <p>خاڵەکانت: <b id="finalScore">٠</b></p>
-            <button onclick="resetGame()">🔄 دووبارە بکەوە</button>
-        </div>
+    <video id="camera" autoplay playsinline></video>
+
+    <div class="sign-buttons" id="signButtons">
+        <button class="sign-btn" data-sign="سڵاو">👋 سڵاو</button>
+        <button class="sign-btn" data-sign="سوپاس">🙏 سوپاس</button>
+        <button class="sign-btn" data-sign="باش">👍 باش</button>
+        <button class="sign-btn" data-sign="نەخێر">👎 نە</button>
+        <button class="sign-btn" data-sign="بەڵێ">✅ ئەرێ</button>
+        <button class="sign-btn" data-sign="چۆنیت؟">❓ چۆنی؟</button>
     </div>
-    <script src="script.js"></script>
+
+    <div class="add-form">
+        <input type="text" id="newWord" placeholder="وشەیەکی نوێ بنووسە...">
+        <button id="addWordBtn">➕ زیادکردن</button>
+    </div>
+
+    <div id="status">🔴 چاوەڕوانی کامێرا...</div>
+
+    <div class="voice-picker">
+        🔊 دەنگ:
+        <select id="voiceSelect"></select>
+    </div>
+
+    <div class="controls">
+        <button id="startCam">📷 کامێرا بکەرەوە</button>
+        <button id="stopCam">⏹ کامێرا بگرە</button>
+    </div>
+    <div class="footer">✨ لەبری فایلی دەنگی دیاریکراو، ئێستا خودی وێبگەڕەکەت دەنگ دروست دەکات (Text-to-Speech)</div>
+</div>
+
+<script>
+    // -----------------------------------------------------
+    // 1. گرتنی کامێرا
+    // -----------------------------------------------------
+    const video = document.getElementById('camera');
+    const statusEl = document.getElementById('status');
+    let stream = null;
+
+    async function startCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+            video.srcObject = stream;
+            statusEl.innerHTML = '✅ کامێرا کرایەوە، ئاماژەیەک هەڵبژێرە';
+        } catch (err) {
+            statusEl.innerHTML = '❌ هەڵە: کامێرا نەکرایەوە - ' + err.message;
+        }
+    }
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(t => t.stop());
+            video.srcObject = null;
+            stream = null;
+            statusEl.innerHTML = '⏸ کامێرا گیرا';
+        }
+    }
+
+    document.getElementById('startCam').addEventListener('click', startCamera);
+    document.getElementById('stopCam').addEventListener('click', stopCamera);
+
+    // -----------------------------------------------------
+    // 2. دەنگدانەوە بە بەکارهێنانی Web Speech API
+    //    (کوردی لە هەندێک وێبگەڕدا پشتگیری نییە، بۆیە
+    //     نزیکترین دەنگی بەردەست هەڵدەبژێرین، یان دەقەکە
+    //     پیشان دەدرێت ئەگەر هیچ دەنگێک بەردەست نەبوو)
+    // -----------------------------------------------------
+    let voices = [];
+    const voiceSelect = document.getElementById('voiceSelect');
+
+    function loadVoices() {
+        voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+        voiceSelect.innerHTML = '';
+        if (voices.length === 0) {
+            const opt = document.createElement('option');
+            opt.textContent = 'هیچ دەنگێک نەدۆزرایەوە';
+            voiceSelect.appendChild(opt);
+            return;
+        }
+        // کوردی/عەرەبی/فارسی بخەرە پێش، دواتر ئەوانی تر
+        const preferred = voices.filter(v => /ku|ar|fa/i.test(v.lang));
+        const rest = voices.filter(v => !/ku|ar|fa/i.test(v.lang));
+        [...preferred, ...rest].forEach(v => {
+            const opt = document.createElement('option');
+            opt.value = v.name;
+            opt.textContent = `${v.name} (${v.lang})`;
+            voiceSelect.appendChild(opt);
+        });
+    }
+
+    if (window.speechSynthesis) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+
+    function speak(text) {
+        if (!window.speechSynthesis) {
+            statusEl.innerHTML = '⚠️ وێبگەڕەکەت پشتگیری دەنگ ناکات، دەقەکە: ' + text;
+            return;
+        }
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        const chosenName = voiceSelect.value;
+        const chosenVoice = voices.find(v => v.name === chosenName);
+        if (chosenVoice) {
+            utter.voice = chosenVoice;
+            utter.lang = chosenVoice.lang;
+        } else {
+            utter.lang = 'ar'; // نزیکترین بەدیل
+        }
+        utter.onstart = () => { statusEl.innerHTML = '🔊 گوێ لێبگرە: ' + text; };
+        utter.onend = () => { statusEl.innerHTML = '✅ تەواو بوو: ' + text; };
+        utter.onerror = () => { statusEl.innerHTML = '❌ نەتوانرا دەنگ بدرێتەوە بۆ: ' + text; };
+        window.speechSynthesis.speak(utter);
+    }
+
+    // -----------------------------------------------------
+    // 3. گرێدانی دوگمە بنچینەییەکان
+    // -----------------------------------------------------
+    document.getElementById('signButtons').addEventListener('click', function(e) {
+        const btn = e.target.closest('.sign-btn');
+        if (!btn) return;
+        speak(btn.getAttribute('data-sign'));
+    });
+
+    // -----------------------------------------------------
+    // 4. زیادکردنی وشەی نوێ لەلایەن بەکارهێنەرەوە
+    // -----------------------------------------------------
+    document.getElementById('addWordBtn').addEventListener('click', addNewWord);
+    document.getElementById('newWord').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') addNewWord();
+    });
+
+    function addNewWord() {
+        const input = document.getElementById('newWord');
+        const word = input.value.trim();
+        if (!word) return;
+
+        const btn = document.createElement('button');
+        btn.className = 'sign-btn';
+        btn.setAttribute('data-sign', word);
+        btn.textContent = '🆕 ' + word;
+        document.getElementById('signButtons').appendChild(btn);
+
+        input.value = '';
+        speak(word);
+    }
+
+    console.log('ئاماژە بە دەنگ - کوردی بەخێربێیت!');
+</script>
+
 </body>
 </html>
